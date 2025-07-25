@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { SeederService } from './seeder/seeder.service';  
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,10 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
     transform: true,
   }));
+
+   // Run the seed service BEFORE starting the server
+  const seeder = app.get(SeederService);
+  await seeder.seed();
 
   // Configure Swagger
   const config = new DocumentBuilder()
@@ -33,7 +38,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log('Library Manager API is running on http://localhost:3000');
-  console.log('Swagger documentation is available at http://localhost:3000/api');
+  console.log(`Library Manager API is running on http://localhost:${process.env.PORT ?? 3000}`);
+  console.log(`Swagger documentation is available at http://localhost:${process.env.PORT ?? 3000}/api`);
 }
 bootstrap();
