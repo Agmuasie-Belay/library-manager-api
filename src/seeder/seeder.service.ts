@@ -149,6 +149,23 @@ export class SeederService {
       console.log('Default admin user created: admin@library.com/admin123');
     }
 
+    // Seed default librarian user
+    const librarianUser = await this.staffRepository.findOne({
+      where: { username: 'librarian' },
+    });
+
+    if (!adminUser) {
+      const hashedPassword = await bcrypt.hash('librarian123', 10);
+      const admin = this.staffRepository.create({
+        username: 'librarian',
+        email: 'librarian@library.com',
+        password_hash: hashedPassword,
+        role: 'librarian',
+      });
+      await this.staffRepository.save(admin);
+      console.log('Default admin user created: admin@library.com/admin123');
+    }
+
     console.log('Database seeded successfully!');
   }
 } 
