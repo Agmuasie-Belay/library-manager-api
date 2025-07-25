@@ -156,14 +156,14 @@ export class SeederService {
 
     if (!librarianUser) {
       const hashedPassword = await bcrypt.hash('librarian123', 10);
-      const admin = this.staffRepository.create({
+      const librarian = this.staffRepository.create({
         username: 'librarian',
         email: 'librarian@library.com',
         password_hash: hashedPassword,
         role: 'librarian',
       });
-      await this.staffRepository.save(admin);
-      console.log('Default admin user created: admin@library.com/admin123');
+      await this.staffRepository.save(librarian);
+      console.log('Default librarian user created: librarian@library.com/librarian123');
     }
 
     console.log('Database seeded successfully!');
