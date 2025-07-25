@@ -66,28 +66,51 @@ export class AuthController {
     return this.authService.signup(signupDto);
   }
 
-  // @Post('create-admin')
-  // @ApiOperation({ summary: 'Create admin user for testing' })
-  // @ApiResponse({ status: 201, description: 'Admin user created successfully' })
-  // async createAdmin() {
-  //   const adminData = {
-  //     username: 'admin',
-  //     email: 'admin@library.com',
-  //     password: 'admin123',
-  //     role: 'admin' as const,
-  //   };
+  @Post('create-admin')
+  @ApiOperation({ summary: 'Create admin user for testing' })
+  @ApiResponse({ status: 201, description: 'Admin user created successfully' })
+  async createAdmin() {
+    const adminData = {
+      username: 'admin',
+      email: 'admin@library.com',
+      password: 'admin123',
+      role: 'admin' as const,
+    };
     
-  //   try {
-  //     const user = await this.staffService.create(adminData);
-  //     return { message: 'Admin user created successfully', user: { id: user.id, username: user.username, email: user.email, role: user.role } };
-  //   } catch (error) {
-  //     if (error.message.includes('already exists')) {
-  //       return { message: 'Admin user already exists' };
-  //     }
-  //     throw error;
-  //   }
-  // }
+    try {
+      const user = await this.staffService.create(adminData);
+      return { message: 'Admin user created successfully', user: { id: user.id, username: user.username, email: user.email, role: user.role } };
+    } catch (error) {
+      if (error.message.includes('already exists')) {
+        return { message: 'Admin user already exists' };
+      }
+      throw error;
+    }
+  }
 
+  @Post('create-librarian')
+  @ApiOperation({ summary: 'Create librarian user for testing' })
+  @ApiResponse({ status: 201, description: 'Librarian user created successfully' })
+  async createLibrarian() {
+    const librarinaData = {
+      username: 'librarian',
+      email: 'librarian@library.com',
+      password: 'librarian123',
+      role: 'librarian' as const,
+    };
+    
+    try {
+      const user = await this.staffService.create(librarinaData);
+      return { message: 'Librarian user created successfully', user: { id: user.id, username: user.username, email: user.email, role: user.role } };
+    } catch (error) {
+      if (error.message.includes('already exists')) {
+        return { message: 'Librarian user already exists' };
+      }
+      throw error;
+    }
+  }
+
+  
   @Get('profile')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
