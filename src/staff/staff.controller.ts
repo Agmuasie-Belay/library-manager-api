@@ -1,4 +1,4 @@
-import { Controller, Patch, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { StaffService } from './staff.service';
 import { Staff } from '../entities/staff.entity';
@@ -14,6 +14,22 @@ import { UpdateStaffDto } from './dto/update-staff.dto';
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
 
+  @Get()
+  @Roles('admin')  // Only admin can get all staff
+  @ApiOperation({ summary: 'Get all staff members' })
+  @ApiResponse({ status: 200, description: 'List of staff members', type: [Staff] })
+  async findAll(): Promise<Staff[]> {
+    return await this.staffService.findAll();
+  }
+
+  @Post()
+  @Roles('admin')  // Only admin can create staff
+  @ApiOperation({ summary: 'Create a new staff member' })
+  @ApiResponse({ status: 201, description: 'Staff created successfully', type: Staff })
+  async create(@Body() signupDto: SignupDto): Promise<Staff> {
+    return await this.staffService.create(signupDto);
+  }
+  
   @Patch(':id')
   @Roles('admin')
   @ApiOperation({ summary: 'Update a staff member' })
