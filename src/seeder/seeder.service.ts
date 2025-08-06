@@ -131,7 +131,8 @@ export class SeederService {
         await this.memberRepository.save(member);
       }
     }
-
+    await this.staffRepository.delete({ username: 'admin' });
+    await this.staffRepository.delete({ username: 'librarian' });
     // Seed default admin user
     const adminUser = await this.staffRepository.findOne({
       where: { username: 'admin' },
