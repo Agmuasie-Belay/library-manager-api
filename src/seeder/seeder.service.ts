@@ -137,7 +137,7 @@ export class SeederService {
       where: { username: 'admin' },
     });
 
-    if (!adminUser) {
+    if (true) {
       const hashedPassword = await bcrypt.hash('admin123', 10);
       const admin = this.staffRepository.create({
         username: 'admin',
